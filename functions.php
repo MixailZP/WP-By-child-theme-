@@ -27,16 +27,6 @@ function my_theme_enqueue_styles() {
     wp_enqueue_script( 'forms_action', get_stylesheet_directory_uri() . '/assets/js/theme.js', array('jquery'), time(), true ); // :)
 }
 
-
-// add_action( 'wp_enqueue_scripts', 'my_scripts_method' );
-// function my_scripts_method() {
-// 	// отменяем зарегистрированный jQuery
-// 	// вместо "jquery-core", можно вписать "jquery", тогда будет отменен еще и jquery-migrate
-// 	wp_deregister_script( 'jquery-core' );
-// 	wp_register_script( 'jquery-core', 'https://code.jquery.com/jquery-3.6.1.min.js');
-// 	wp_enqueue_script( 'jquery' );
-// }
-
 // ********************* Custom post type Публикация **************************
 
 add_action( 'init', 'create_posttype' );
@@ -58,26 +48,33 @@ function create_posttype() {
         )
 
     );
-
-
 }
-
 
 // ********************* Принимаем данные из формы и отправляем на Email  **************************
 
-function create_formToemail(){
-    $recepient = "chebykin.m94@gmail.com";
+add_action( 'wp_ajax_send_mail', 'send_form_callback');
+add_action( 'wp_ajax_nopriv_send_mail', 'send_form_callback');  //обработка для неавториз пользоватеей
+
+function send_form_callback(){
+    $to = "chebykin.m94@gmail.com";
+    // $to .= "client.first@gmail.com";
+    // $subject = "Тестовое письмо";
+
     $siteName = "projecttest";
 
-    $name = trim($_POST["title"]);
+    $title = trim($_POST["title"]);
     $email = trim($_POST["email"]);
     $message = "Заголовок: $title \nИмейл: $email";
 
     $pagetitle = "Заявка с сайта \"$siteName\"";
-    mail($recepient, $pagetitle, $message, "Content-type: text/plain; charset=\"utf-8\"\n From: $recepient");
+    // var_dump(wp_mail($to, $pagetitle, 'Test text'));
+    // wp_die();
+
+
+    mail($to,  $subject, $pagetitle, $message, "Content-type: text/plain; charset=\"utf-8\"\n From: $recepient");
+    wp_die();
+    // var_dump($result);
 }
-
-
 
 
 

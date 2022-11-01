@@ -659,6 +659,7 @@ ul{
     transform: translate(-50%, -50%);
     padding: 40px;
     background-color: #fff;
+    z-index: 4;
 }
 
 .close-popup {
@@ -987,4 +988,22 @@ ul{
 .error_msg {
     text-align: center;
     color: #f00
+}
+
+
+
+.contform_respond {
+    display: none;
+    margin-top: 1.5em;
+    padding: 1em;
+    border-radius: 3px;
+    border: 1px solid #89d88c;
+    background: #cdefce;
+    color: #2a752d;
+}
+
+.contform_respond.err {
+    border: 1px solid #ffb0cb;
+    background: #ffe1ec;
+    color: #E91E63;
 }

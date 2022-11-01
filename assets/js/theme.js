@@ -17,6 +17,8 @@ form.addEventListener("submit", (e) => {
 function checkInputFields() {
     const titleField = title_field.value.trim();
     const emailField = email_field.value.trim();
+ 
+    
 
     if (titleField === "") {
         setInvalid(title_field, "Поле заголовок не может быть пустым.");
@@ -28,8 +30,10 @@ function checkInputFields() {
         setInvalid(email_field, "Поле для  емейла должно быть заполнено.");
     } else if(!validEmail(emailField)) {
         setInvalid(email_field, "Емейл неверно введен")
+    
     } else {
         setValid(email_field);
+
     }
     
     console.log("titleField")
@@ -47,6 +51,8 @@ function setInvalid(input, msg) {
 function setValid(input) {
     const form_field = input.parentElement;
     form_field.className = "form-field success";
+
+    
 }
 
 function validEmail(em) {
@@ -86,19 +92,25 @@ $(".file_remove").on("click", function(e){
 // **************************** Отправка формы AJAX *****************************
 
 $(document).ready(function(){
-    $.ajax({
-        type: "POST",
-        url: "../../../twentytwenty-child/pages-templates/page-add.php",
-        date: $(this).serialize()
-    }).done(function() {
-        $('.js-overlay-thank-you').fadeIn();
-        $(this).find('input').val('');
-        $('#creation-form').trigger('reset');
-        $('#main_full').fadeOut();
+    $(".creation-form").submit(function() {
+        var str = $(this).serialize();
 
+        $.ajax({
+            method: "POST",
+            url: "http://projecttest/wp-admin/admin-ajax.php",
+            data : {
+            str,
+            action: 'send_mail'
+        }
+         }).done(function() {
+            $('.js-overlay-thank-you').fadeIn();
+            $(this).find('input').val('');
+            $('#creation-form').trigger('reset');
+            $('#main_full').trigger('reset');
+        })
     });
     return false;
-});
+}); 
 
 
 //************ Закрыть Popup "спасибо" по клику на крестик ***************************
@@ -115,8 +127,6 @@ $(document).mouseup(function (e) {
         $('.js-overlay-thank-you').fadeOut();
     }
 });
-
-
 
 
 
